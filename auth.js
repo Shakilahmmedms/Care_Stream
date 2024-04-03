@@ -45,7 +45,7 @@ const handleLogin=(event)=>{
     const password = getValue('login-password');
     console.log(username,password);
     
-    if((username, password)){
+    if((username && password)){
         fetch('https://creat-stream.onrender.com/patient/login/',{
             method: "POST",
             headers: { "content-type": "application/json" },
@@ -61,6 +61,7 @@ const handleLogin=(event)=>{
                 window.location.href = 'index.html'
             }
         });
+
     }
 }
 
@@ -81,3 +82,49 @@ const handlelogOut = () => {
         localStorage.removeItem("user_id");
       });
   };
+
+
+
+// for profile show 
+
+// Function to check if the user is authenticated
+const isAuthenticated = () => {
+  // Check if the user token exists in local storage or session storage
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  return !!token; // Return true if token exists, false otherwise
+};
+
+// Function to fetch user profile
+const fetchUserProfile = () => {
+  // Make a GET request to the profile endpoint with the token
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  fetch('profileEndpoint', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`, // Include the token in the request header
+    },
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Display user profile data on the page
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('Error fetching user profile:', error);
+  });
+};
+
+// Function to render navbar based on authentication status
+const renderNavbar = () => {
+  const navbar = document.getElementById('navbar');
+  if (isAuthenticated()) {
+    // If user is authenticated, fetch and display user profile
+    fetchUserProfile();
+  } else {
+    // If user is not authenticated, display register link in the navbar
+    navbar.innerHTML = '<a href="/register">Register</a>';
+  }
+};
+
+// Call renderNavbar function when the page loads
+window.addEventListener('load', renderNavbar);
