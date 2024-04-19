@@ -84,6 +84,16 @@ const handlelogOut = () => {
   };
 
 
+      // JavaScript code to trigger SweetAlert
+      document.getElementById('showAlert').addEventListener('click', function() {
+        // Basic SweetAlert example
+        Swal.fire({
+          title: 'Hello!',
+          text: 'This is a SweetAlert dialog.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+      });
 
 // for profile show 
 
